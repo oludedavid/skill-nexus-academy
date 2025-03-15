@@ -23,15 +23,15 @@ export default function NavBar() {
     <nav className="sticky top-0 z-50 bg-[#10192B] shadow-lg">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          <div className="flex items-center">
-            <button
+          <div className="flex items-center justify-center">
+            <Button
               className="lg:hidden p-2 text-gray-300 hover:text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle navigation menu"
               aria-expanded={isMobileMenuOpen}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            </Button>
             <Logo
               logoName={"SkillNexusAcademy"}
               className="h-10 w-10 ml-2 text-white font-bold text-lg"

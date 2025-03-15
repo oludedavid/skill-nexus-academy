@@ -62,7 +62,6 @@ export default function RegistrationForm() {
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     setLoading(true);
     try {
-      console.log(values);
       await postUserData(values);
       reset();
     } catch (error) {
@@ -78,7 +77,9 @@ export default function RegistrationForm() {
         `${process.env.NEXT_PUBLIC_API_URL}/users/register/`,
         data
       );
-      console.log(response.data);
+      if (response.data.success) {
+        window.location.href = "/login";
+      }
     } catch (error) {
       console.error("Error:", error);
       throw error;
