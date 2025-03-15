@@ -23,6 +23,11 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(16,25,43,1) 0%, rgba(54,84,145,1) 35%, rgba(16,25,43,1) 100%)",
+          backgroundSize: "200% 200%",
+        }}
       >
         <SessionProvider>{children}</SessionProvider>
       </body>

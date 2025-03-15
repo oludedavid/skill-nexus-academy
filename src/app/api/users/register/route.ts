@@ -6,9 +6,9 @@ import bcrypt from "bcrypt";
 export async function POST(request: Request) {
   await dbConnect();
   try {
-    const { fullName, email, password, userRole } = await request.json();
+    const { fullName, email, password, role } = await request.json();
 
-    if (!fullName || !email || !password || !userRole) {
+    if (!fullName || !email || !password || !role) {
       return new Response(
         JSON.stringify({ error: "All fields are required" }),
         {
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!ROLES.includes(userRole)) {
+    if (!ROLES.includes(role)) {
       return new Response(
         JSON.stringify({ error: "Invalid user role provided" }),
         {
@@ -42,11 +42,11 @@ export async function POST(request: Request) {
       fullName,
       email,
       password: hashedPassword,
-      userRole,
+      role,
     });
 
     return new Response(
-      JSON.stringify({ success: true, user: { fullName, email, userRole } }),
+      JSON.stringify({ success: true, user: { fullName, email, role } }),
       {
         status: 201,
         headers: { "Content-Type": "application/json" },

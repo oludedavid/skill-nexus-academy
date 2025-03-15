@@ -21,7 +21,7 @@ export default function LoginWithSocials() {
           <Button
             onClick={() => signIn("google", { callbackUrl: "/" })}
             variant="outline"
-            className="flex items-center justify-center gap-3 w-full py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-300"
+            className="flex items-center justify-center cursor-pointer gap-3 w-full py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-300"
           >
             <Image src="/google.png" alt="Google Logo" width={20} height={20} />
             <span className="font-medium text-gray-700">
@@ -32,7 +32,7 @@ export default function LoginWithSocials() {
           <Button
             onClick={() => signIn("github", { callbackUrl: "/" })}
             variant="outline"
-            className="flex items-center justify-center gap-3 w-full py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-300"
+            className="flex items-center justify-center cursor-pointer gap-3 w-full py-3 border border-gray-300 rounded-md hover:bg-gray-50 transition duration-300"
           >
             <Image src="/github.png" alt="Github Logo" width={20} height={20} />
             <span className="font-medium text-gray-700">

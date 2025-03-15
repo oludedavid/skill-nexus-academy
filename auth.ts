@@ -1,8 +1,8 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import client from "@/lib/mongoDBAdapter";
-import GoogleProvider from "next-auth/providers/google";
-import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider, { GoogleProfile } from "next-auth/providers/google";
+import GitHubProvider, { GithubProfile } from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import UserModel from "@/lib/models/User";
 import dbConnect from "@/lib/dbConnect";
@@ -12,6 +12,14 @@ export const authOptions: NextAuthOptions = {
   adapter: MongoDBAdapter(client),
   providers: [
     GoogleProvider({
+      profile(profile: GoogleProfile) {
+        return {
+          ...profile,
+          role: profile.role ?? "student",
+          id: profile.sub.toString(),
+          image: profile.picture,
+        };
+      },
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
@@ -24,6 +32,14 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     GitHubProvider({
+      profile(profile: GithubProfile) {
+        return {
+          ...profile,
+          role: profile.role ?? "student",
+          id: profile.id.toString(),
+          image: profile.avatar_url,
+        };
+      },
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
       authorization: {
@@ -48,6 +64,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const user = await UserModel.findOne({ email: credentials.email });
+
           if (!user) throw new Error("Invalid email or password");
 
           const passwordMatch = await bcrypt.compare(
@@ -59,7 +76,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: user._id.toString(),
             email: user.email,
-            role: user.userRole,
+            role: user.role,
           };
         } catch (error) {
           throw new Error("Invalid login credentials error: " + error);
@@ -72,14 +89,11 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === "credentials") {
         return true;
       }
-
       await dbConnect();
       const existingUser = await UserModel.findOne({ email: user.email });
-
       if (!existingUser) {
         return true;
       }
-
       if (
         existingUser.provider &&
         existingUser.provider !== account?.provider
@@ -94,18 +108,22 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
+        token.role = (user as any).role || (user as any).role;
       }
       return token;
     },
+
     async session({ session, token }) {
-      if (!session.user) {
-        session.user = {};
+      if (session?.user) {
+        session.user.id = token.id;
+        session.user.email = token.email;
+        session.user.name = token.name;
+        session.user.role = token.role;
       }
-      session.user.email = token.email;
-      session.user.name = token.name;
       return session;
     },
   },
+
   session: {
     strategy: "jwt",
   },
