@@ -1,10 +1,10 @@
-"use client";
 import React from "react";
 import CourseSessionForm from "@/ui/createCourseSessionForm";
 import CourseForm from "@/ui/createCourseForm";
 import CategoryForm from "@/ui/createCategoryForm";
 import FormWrapper from "@/ui/formWrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CourseCategoryTableContent from "@/app/tables/courseCategories/table";
 
 const formData = [
   {
@@ -74,7 +74,7 @@ export default function AdminCourseSessions() {
           <div className="p-6">
             <TabsContent value="categories" className="mt-0">
               <div className="bg-[#10192B] p-6 rounded-lg border border-[#1A2434]">
-                {/* Add category management content */}
+                <CourseCategoryTableContent />
               </div>
             </TabsContent>
             <TabsContent value="courses" className="mt-0">
