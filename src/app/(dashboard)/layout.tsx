@@ -50,7 +50,7 @@ export default function DashboardLayout({
   const { data: session, status } = useSession();
 
   return (
-    <SidebarProvider suppressContentEditableWarning>
+    <SidebarProvider defaultOpen={false} suppressContentEditableWarning>
       <DashboardSidebar
         menuItems={
           session?.user.role === "student"

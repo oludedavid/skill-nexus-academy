@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
 import isEqual from "lodash.isequal";
 
 import { Button } from "@/components/ui/button";
